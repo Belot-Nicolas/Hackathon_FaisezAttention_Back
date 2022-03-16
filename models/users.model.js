@@ -1,8 +1,18 @@
-const connection = require("../db-config");
+const connection = require('../db-config');
 
-const db = connection.promise();
+const findUserByEmail = (email) => 
+    connection
+    .promise()
+    .query('SELECT * FROM users WHERE email=?',
+    [email]);
 
+const insertUser = (firstname, lastname, password, email, avatar, role) =>
+    connection
+    .promise() 
+    .query('INSERT INTO users (`firstname`, `lastname`, `password`, `email`, `avatar`, `role`) VALUES (?, ?, ?, ?, ?, ?)',
+    [firstname, lastname, password, email, avatar, role]); 
 
 module.exports = {
-
-}
+    findUserByEmail,
+    insertUser,
+};
