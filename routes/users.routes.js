@@ -8,7 +8,7 @@ const checkJwt = require ('../middlewares/checkJwt');
 const { findUserByEmail, insertUser} = require('../models/users.model')
 
 //je protège ma route tant que l'utilisateur n'est pas connecté
-router.get('/', (req, res) => {
+router.get('/', checkJwt, (req, res) => {
     connection.query('SELECT * FROM users', (err, result) => {
       if (err) {
         res.status(500).send('Error retrieving users from database');
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   connection.query(
-    'SELECT * FROM users WHERE id = ?',
+    'SELECT * FROM users WHERE id_user = ?',
     [userId],
     (err, results) => {
       if (err) {
@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
 
   //étape de l'encryptage (éléments de l'entité= le bolean est repenté par un chiffre 0/1= true /false))
   const hashedPassword = await argon2.hash(value.password);
-  await insertUser(value.lastname, value.firstname, value.email, value.avatar, hashedPassword, value.role);
+  await insertUser(value.firstname, value.lastname, hashedPassword, value.email, value.avatar, value.role);
 
   //génération du token
   const jwtKey = generateJwt(value.email);
