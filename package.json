@@ -20,10 +20,12 @@
   },
   "homepage": "https://github.com/Belot-Nicolas/Hackathon_FaisezAttention_Back#readme",
   "dependencies": {
+    "argon2": "^0.28.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "gitignore": "^0.7.0",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15"
   }

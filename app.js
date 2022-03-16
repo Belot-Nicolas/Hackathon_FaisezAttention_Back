@@ -3,7 +3,7 @@ const app = express();
 const connection = require('./db-config');
 const router = require('./routes/index.routes');
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 connection.connect((err) => {
     if (err) {
