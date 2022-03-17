@@ -43,6 +43,10 @@ const userSchema = Joi.object({
   avatar: Joi.string().required(),
   role:Joi.string().required()
 })
+const userSchemaLogin = Joi.object({
+  password: Joi.string().required(),
+  email: Joi.string().email().required(),
+})
 
 //lors de la création d'un user
 router.post('/', async (req, res) => {
@@ -76,7 +80,7 @@ router.post('/', async (req, res) => {
 
 //vérification des Données utilisateurs (login dashboard)
 router.post('/login', async (req,res) => {
-  const { value, error} = userSchema.validate(req.body);
+  const { value, error} = userSchemaLogin.validate(req.body);
   if(error){
     return res.status(400).json(error);
   }
