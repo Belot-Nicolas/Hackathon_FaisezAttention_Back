@@ -8,7 +8,8 @@ const checkJwt = require ('../middlewares/checkJwt');
 const { findUserByEmail, insertUser} = require('../models/users.model')
 
 //je protège ma route tant que l'utilisateur n'est pas connecté
-router.get('/', checkJwt, (req, res) => {
+// router.get('/', checkJwt, (req, res) => {
+router.get('/', (req, res) => {
     connection.query('SELECT * FROM users', (err, result) => {
       if (err) {
         res.status(500).send('Error retrieving users from database');
@@ -28,6 +29,23 @@ router.get('/:id', (req, res) => {
         res.status(500).send('Error retrieving user from database');
       } else {
         if (results.length) res.json(results[0]);
+        else res.status(404).send('User not found');
+      }
+    }
+  );
+});
+
+router.get('/email/:email', (req, res) => {
+  const userEmail = req.params.email;
+  connection.query(
+    // 'SELECT * FROM users WHERE email = ?',
+    'SELECT * FROM users as u INNER JOIN game_session as s ON u.id_user=s.id_user INNER JOIN games as g ON s.id_game=g.id_game WHERE u.email = ?',
+    [userEmail],
+    (err, results) => {
+      if (err) {
+        res.status(500).send('Error retrieving user from database');
+      } else {
+        if (results.length) res.json(results);
         else res.status(404).send('User not found');
       }
     }
@@ -89,7 +107,6 @@ router.post('/login', async (req,res) => {
   if(!existingUser) {
     return res.status(403).json({
       message : 'email ou le mot de passe ne correspondent pas'
-    
     })
   }
 
