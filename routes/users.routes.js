@@ -1,5 +1,6 @@
 const connection = require("../db-config");
 const router = require("express").Router();
+const users = require('../models/users.model');
 const argon2 = require("argon2");
 const Joi = require ('joi');
 const { generateJwt } = require('../utilis/auth');
@@ -118,12 +119,26 @@ router.post('/login', async (req,res) => {
     })
   }
 
-  const jwtKey = generateJwt(value.email);
+    const jwtKey = generateJwt(value.email);
   return res.json({
     credentials : jwtKey
   })
 })
 
+router.put('/:id', async (req, res) => {
+  const userExist = await users.findOne(req.params.id);
+  if (userExist) {
+      const userExist = await users.update(req.body, req.params.id);
+      if (userExist) {
+          return res.status(200).json({...userExist, ...req.body});
+      } else {
+          return res.sendstatus(500).send('Error updating user')
+      }
+  }
+  else {
+      res.status(404).send('user not found');
+  }
+});
 
 
 module.exports = router;
