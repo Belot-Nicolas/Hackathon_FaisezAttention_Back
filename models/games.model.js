@@ -71,11 +71,22 @@ const update = (data, id) => {
         });
 }
 
+const average = () => {
+    return db
+    .query("SELECT  g.name, AVG(s.score) AS average FROM games as g INNER JOIN game_session as s ON s.id_game=g.id_game GROUP BY g.name ORDER BY g.name ASC")
+    .then(([result]) => result)
+    .catch((err) => {
+        console.error(err);
+        return err;
+    });
+}
+
 module.exports = {
     findAll,
     findOne,
     remove,
     create,
-    update
+    update,
+    average
     // validate
 }
