@@ -39,8 +39,8 @@ router.get('/:id', (req, res) => {
 router.get('/email/:email', (req, res) => {
   const userEmail = req.params.email;
   connection.query(
-    // 'SELECT * FROM users WHERE email = ?',
-    'SELECT * FROM users as u INNER JOIN game_session as s ON u.id_user=s.id_user INNER JOIN games as g ON s.id_game=g.id_game WHERE u.email = ?',
+    // 'SELECT * FROM users as u INNER JOIN game_session as s ON u.id_user=s.id_user INNER JOIN games as g ON s.id_game=g.id_game WHERE u.email = ?',
+    'SELECT * FROM users WHERE email = ?',
     [userEmail],
     (err, results) => {
       if (err) {

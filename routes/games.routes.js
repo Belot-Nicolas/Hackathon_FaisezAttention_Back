@@ -8,6 +8,13 @@ router.get('/', (req, res) => {
         })
 });
 
+router.get('/stat', (req, res) => {
+    games.average()
+        .then((result) => {
+            res.status(200).json(result);
+        })
+});
+
 router.get('/:id', (req, res) => {
     games.findOne(req.params.id)
         .then((game) => {
@@ -57,6 +64,7 @@ router.put('/:id', async (req, res) => {
         res.status(404).send('game not found');
     }
 });
+
 
 
 
